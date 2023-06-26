@@ -6,7 +6,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onChangeEmail=(e) =>{
+  const onChangeEmail= (e) =>{
     console.log(e.target.value);
     setEmail(e.target.value);
   }
@@ -18,19 +18,22 @@ const Login = () => {
 
   const handleSubmit=(e)=>{
     e.preventDefault();
+    console.log();
     console.log("Handle Submit Called");
     console.log("Email:", email);
     console.log("Passord:",password);
+
+    axios.post('http://localhost:5000/api/login', {
+      email: email,
+      password: password
+    }).then(res=>{
+      console.log(res.data)
+    }).catch(err=>{
+      console.log(err)
+    })
   }
 
-  axios.post('http://localhost:5000/api/login', {
-    email: email,
-    password: password
-  }).then(res=>{
-    console.log(res.data)
-  }).catch(err=>{
-    console.log(err)
-  })
+
   return (
     <>
       <Navbar />
@@ -45,9 +48,12 @@ const Login = () => {
                 <input
                   type="email"
                   className="form-control"
-                  onChange={onChangeEmail}
+                  
                   id="floatingInput"
                   placeholder="name@example.com"
+                  onChange={onChangeEmail}
+                  name="email"
+                  value={email}
                 />
               </div>
               <div className="my-3">
@@ -58,13 +64,15 @@ const Login = () => {
                   id="floatingPassword"
                   placeholder="Password"
                   onChange={onChangePassword}
+                  name="password"
+                  value={password}
                 />
               </div>
               <div className="my-3">
                 <p>New Here? <Link to="/register" className="text-decoration-underline text-info">Register</Link> </p>
               </div>
               <div className="text-center">
-                <button className="my-2 mx-auto btn btn-dark" type="submit" onSubmit={handleSubmit}>
+                <button className="my-2 mx-auto btn btn-dark" type="submit" >
                   Login
                 </button>
               </div>
